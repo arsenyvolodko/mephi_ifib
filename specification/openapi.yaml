@@ -80,8 +80,6 @@ paths:
     post:
       tags:
         - home
-      security:
-        - bearerAuth: []
       requestBody:
         content:
           application/json:
