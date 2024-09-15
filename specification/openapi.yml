@@ -22,6 +22,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
+  /api/v1/home/media/main-video:
+    get:
+      tags:
+        - home
+      responses:
+        '200':
+          description: successful request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoLink'
+  /api/v1/home/team:
+    get:
+      tags:
+        - home
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMember'
+  /api/v1/home/feedback-form:
+    post:
+      tags:
+        - home
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedObject'
+
 
 components:
   securitySchemes:
@@ -41,6 +85,46 @@ components:
           type: string
         password:
           type: string
+
+    VideoLink:
+      type: object
+      properties:
+        url:
+          type: string
+
+    TeamMember:
+      type: object
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+          format: binary
+
+    FeedbackRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        text:
+          type: string
+
+    CreatedObject:
+      properties:
+        id:
+          type: integer
+
+    Error:
+      properties:
+        type:
+          type: integer
+        message:
+          type: string
+
 
     AuthResponse:
       type: object
