@@ -3,7 +3,24 @@ info:
   title: Mephi-IFIB API
   version: '1.0'
 paths:
-  /api/v1/auth:
+  /api/v1/register:
+    post:
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+        required: true
+      responses:
+        '200':
+          description: successful request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /api/v1/register/confirm:
     post:
       tags:
         - auth
@@ -13,7 +30,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthRequest'
+              $ref: '#/components/schemas/RegistrationConfirmRequest'
+        required: true
+      responses:
+        '200':
+          description: successful request
+  /api/v1/login:
+    post:
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
         required: true
       responses:
         '200':
@@ -75,15 +105,49 @@ components:
       bearerFormat: JWT
 
   schemas:
-    AuthRequest:
+    RegistrationRequest:
       type: object
       required:
-        - login
+        - email
+        - password1
+        - password2
+      properties:
+        email:
+          type: string
+        password1:
+          type: string
+        password2:
+          type: string
+
+    RegistrationConfirmRequest:
+      type: object
+      required:
+        - confirmationCode
+      properties:
+        confirmationCode:
+          type: string
+
+    LoginRequest:
+      type: object
+      required:
+        - email
         - password
       properties:
-        login:
+        email:
           type: string
         password:
+          type: string
+
+    FeedbackRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        text:
           type: string
 
     VideoLink:
@@ -101,16 +165,10 @@ components:
           type: string
           format: binary
 
-    FeedbackRequest:
+    AuthResponse:
       type: object
       properties:
-        name:
-          type: string
-        phoneNumber:
-          type: string
-        email:
-          type: string
-        text:
+        token:
           type: string
 
     CreatedObject:
@@ -123,11 +181,4 @@ components:
         type:
           type: integer
         message:
-          type: string
-
-
-    AuthResponse:
-      type: object
-      properties:
-        token:
           type: string
