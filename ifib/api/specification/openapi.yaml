@@ -3,7 +3,7 @@ info:
   title: Mephi-IFIB API
   version: '1.0'
 paths:
-  /api/v1/register:
+  /api/v1/auth/register:
     post:
       tags:
         - auth
@@ -19,13 +19,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthResponse'
-  /api/v1/register/confirm:
+                $ref: '#/components/schemas/RegisterAuthResponse'
+  /api/v1/auth/register/confirm:
     post:
       tags:
         - auth
-      security:
-        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -35,7 +33,20 @@ paths:
       responses:
         '200':
           description: successful request
-  /api/v1/login:
+  /api/v1/auth/update-confirmation-code:
+    post:
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateConfirmationCodeRequest'
+        required: true
+      responses:
+        '200':
+          description: successful request
+  /api/v1/auth/login:
     post:
       tags:
         - auth
@@ -51,7 +62,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AuthResponse'
+                $ref: '#/components/schemas/LoginAuthResponse'
   /api/v1/home/media/main-video:
     get:
       tags:
@@ -106,13 +117,13 @@ components:
     RegistrationRequest:
       type: object
       required:
-        - email
-        - password1
+        - username
+        - password
         - password2
       properties:
-        email:
+        username:
           type: string
-        password1:
+        password:
           type: string
         password2:
           type: string
@@ -121,17 +132,28 @@ components:
       type: object
       required:
         - confirmationCode
+        - registerToken
       properties:
         confirmationCode:
+          type: string
+        registerToken:
+          type: string
+
+    UpdateConfirmationCodeRequest:
+      type: object
+      required:
+        - registerToken
+      properties:
+        registerToken:
           type: string
 
     LoginRequest:
       type: object
       required:
-        - email
+        - username
         - password
       properties:
-        email:
+        username:
           type: string
         password:
           type: string
@@ -163,7 +185,13 @@ components:
           type: string
           format: binary
 
-    AuthResponse:
+    RegisterAuthResponse:
+      type: object
+      properties:
+        registerToken:
+          type: string
+
+    LoginAuthResponse:
       type: object
       properties:
         token:
