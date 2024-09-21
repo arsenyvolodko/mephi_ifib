@@ -1,6 +1,5 @@
 .idea/
 __pycache__/
 .env
-migrations/
 /media/*/*.*
 draft.py
