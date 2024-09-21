@@ -17,4 +17,4 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH='/app'
 
-CMD ["python3", "manage.py", "runserver", "127.0.0.1:8000"]
+CMD ["python3", "manage.py", "runserver", "localhost:8000"]
