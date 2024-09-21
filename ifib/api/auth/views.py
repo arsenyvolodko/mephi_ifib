@@ -20,7 +20,7 @@ def register(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     data = serializer.validated_data
-    if User.objects.filter(username=data["username"]).first():
+    if User.objects.filter(email=data["email"]).first():
         return Response(
             {
                 "error_message": "Пользователь с таким логином уже существует.",
@@ -28,8 +28,16 @@ def register(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
     user = User(
-        username=data["username"],
-        email=data["username"],
+        first_name=data["first_name"],
+        middle_name=data["middle_name"],
+        last_name=data["last_name"],
+        birth_date=data["birth_date"],
+        mobile_phone=data["mobile_phone"],
+        social_network=data["social_network"],
+        grade=data["grade"],
+        sphere_of_interest=data["sphere_of_interest"],
+        username=data["email"],
+        email=data["email"],
         is_active=False,
         confirmation_code=generate_confirmation_code(),
     )

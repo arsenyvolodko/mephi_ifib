@@ -3,7 +3,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from ifib.enums import RoleEnum
+from ifib.enums import RoleEnum, InterestSphereEnum
 
 
 class Role(models.Model):
@@ -18,6 +18,12 @@ class Role(models.Model):
 
 
 class User(AbstractUser):
+    middle_name = models.CharField(max_length=150, blank=True, null=True)
+    birth_date = models.DateField()
+    mobile_phone = models.CharField()
+    social_network = models.URLField()
+    grade = models.CharField()
+    sphere_of_interest = models.CharField(choices=InterestSphereEnum.choices())
     confirmation_code = models.CharField(max_length=4, blank=True, null=True)
     confirmation_code_last_update = models.DateTimeField(null=True, auto_now_add=True)
     confirmation_code_attempts_num = models.IntegerField(default=0)

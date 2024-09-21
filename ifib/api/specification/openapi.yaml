@@ -121,15 +121,43 @@ components:
     RegistrationRequest:
       type: object
       required:
-        - username
+        - first_name
+        - last_name
+        - birth_date
+        - mobile_phone
+        - grade
+        - sphere_of_interest
+        - email
         - password
         - password2
       properties:
-        username:
+        first_name:
+          type: string
+        middle_name:
+          type: string
+        last_name:
+          type: string
+        birth_date:
+          type: string
+          format: date
+          example: 05.03.2003
+        mobile_phone:
+          type: string
+        grade:
+          type: string
+        sphere_of_interest:
+          type: string
+          enum:
+            - it
+            - science
+            - art
+            - sport
+            - music
+        email:
           type: string
         password:
           type: string
-        password2:
+        password_2:
           type: string
 
     RegistrationConfirmRequest:
