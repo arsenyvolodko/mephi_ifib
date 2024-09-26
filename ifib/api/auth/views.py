@@ -28,16 +28,16 @@ def register(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
     user = User(
+        last_name=data["last_name"],
         first_name=data["first_name"],
         middle_name=data["middle_name"],
-        last_name=data["last_name"],
         birth_date=data["birth_date"],
-        mobile_phone=data["mobile_phone"],
-        social_network=data["social_network"],
-        grade=data["grade"],
-        sphere_of_interest=data["sphere_of_interest"],
-        username=data["email"],
         email=data["email"],
+        username=data["email"],
+        social_network=data["social_network"],
+        educational_status=data["educational_status"],
+        educational_facility=data["educational_facility"],
+        sphere_of_interest=data["sphere_of_interest"],
         is_active=False,
         confirmation_code=generate_confirmation_code(),
     )
@@ -85,6 +85,7 @@ def register_confirm(request):
 
     user.is_active = True
     user.confirmation_code = None
+    user.confirmation_code_attempts_num = 0
     user.registration_token = None
     user.save()
     token = Token.objects.get(user=user).key

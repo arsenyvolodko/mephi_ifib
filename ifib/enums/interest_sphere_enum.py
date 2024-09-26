@@ -2,27 +2,17 @@ from enum import Enum
 
 
 class InterestSphereEnum(Enum):
-    IT = "IT"
-    SCIENCE = "SCIENCE"
-    ART = "ART"
-    SPORT = "SPORT"
-    MUSIC = "MUSIC"
-
-    @property
-    def api_name(self):
-        return self.name.lower()
+    IT = "it"
+    SCIENCE = "science"
 
     @classmethod
     def choices(cls):
-        return [(key.api_name, key.api_name) for key in cls]
+        return [(key.value, key.value) for key in cls]
 
     @property
-    def formatted_name(self):
+    def formatted_name(self) -> str:
         interest_sphere_names = {
-            "IT": "IT",
-            "SCIENCE": "Наука",
-            "ART": "Искусство",
-            "SPORT": "Спорт",
-            "MUSIC": "Музыка",
+            self.IT: "it",
+            self.SCIENCE: "Наука",
         }
-        return interest_sphere_names[self.name]
+        return interest_sphere_names[self]

@@ -3,7 +3,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from ifib.enums import RoleEnum, InterestSphereEnum
+from ifib.enums import RoleEnum, InterestSphereEnum, EducationalStatusEnum
 
 
 class Role(models.Model):
@@ -20,10 +20,11 @@ class Role(models.Model):
 class User(AbstractUser):
     middle_name = models.CharField(max_length=150, blank=True, null=True)
     birth_date = models.DateField()
-    mobile_phone = models.CharField()
     social_network = models.URLField()
-    grade = models.CharField()
+    educational_status = models.CharField(choices=EducationalStatusEnum.choices(), max_length=255, blank=True, null=True)
+    educational_facility = models.CharField(max_length=255, blank=True, null=True)
     sphere_of_interest = models.CharField(choices=InterestSphereEnum.choices())
+
     confirmation_code = models.CharField(max_length=4, blank=True, null=True)
     confirmation_code_last_update = models.DateTimeField(null=True, auto_now_add=True)
     confirmation_code_attempts_num = models.IntegerField(default=0)
@@ -40,7 +41,9 @@ class User(AbstractUser):
         return RoleEnum(value=self.role.id) if self.role else None
 
     def save(self, *args, **kwargs):
-        self.is_superuser = True if self.get_role == RoleEnum.ADMIN else False
+        if self.get_role == RoleEnum.ADMIN:
+            self.is_superuser = True
+            self.is_staff = True
         super().save(*args, **kwargs)
 
 
