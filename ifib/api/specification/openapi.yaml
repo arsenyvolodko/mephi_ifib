@@ -108,7 +108,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedObject'
-
+  /api/v1/article:
+    get:
+      tags:
+        - article
+      parameters:
+        - name: searchName
+          in: query
+          description: Автор или название статьи
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          schema:
+            default: 10
+            type: integer
+        - name: pageNumber
+          in: query
+          schema:
+            default: 1
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetArticlesResponse'
+  /api/v1/article/{articleId}:
+    get:
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: integer
+      tags:
+        - article
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
 
 components:
   securitySchemes:
@@ -223,11 +268,54 @@ components:
           type: string
           format: binary
 
+    BriefArticle:
+      type: object
+      properties:
+        name:
+          type: string
+        author:
+          type: string
+        cover:
+          type: string
+          format: binary
+
+    Article:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        author:
+          type: string
+        cover:
+          type: string
+          format: binary
+        file:
+          type: string
+          format: binary
+
     RegisterAuthResponse:
       type: object
       properties:
         registerToken:
           type: string
+
+    GetArticlesResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        pageNumber:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/BriefArticle"
 
     TokenResponse:
       type: object
