@@ -32,6 +32,8 @@ DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split()
 
+BASE_URL = os.environ.get("BASE_URL")
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "mephi_ifib.middleware.CamelToSnakeQueryParamsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
