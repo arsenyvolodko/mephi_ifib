@@ -2,6 +2,9 @@ openapi: 3.0.1
 info:
   title: Mephi-IFIB API
   version: '1.0'
+servers:
+  - url: http://localhost:8000
+    description: Local server
 paths:
   /api/v1/auth/register:
     post:
@@ -271,29 +274,33 @@ components:
     BriefArticle:
       type: object
       properties:
+        id:
+          type: integer
         name:
           type: string
         author:
           type: string
-        cover:
+        coverUrl:
           type: string
-          format: binary
+          example: https://ifib.mephi.ru/media/article/covers/1.jpg
 
     Article:
       type: object
       properties:
+        id:
+          type: integer
         name:
           type: string
         description:
           type: string
         author:
           type: string
-        cover:
+        coverUrl:
           type: string
-          format: binary
-        file:
+          example: https://ifib.mephi.ru/media/article/covers/1.jpg
+        documentUrl:
           type: string
-          format: binary
+          example: https://ifib.mephi.ru/media/article/documents/1.pdf
 
     RegisterAuthResponse:
       type: object
