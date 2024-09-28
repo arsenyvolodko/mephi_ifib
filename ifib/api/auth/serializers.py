@@ -10,7 +10,7 @@ class UserRegisterSerializer(serializers.Serializer):
     email = serializers.EmailField()
     social_network = serializers.URLField()
     educational_status = serializers.ChoiceField(choices=EducationalStatusEnum.choices(), allow_null=True)
-    educational_facility = serializers.CharField(max_length=255, required=False)
+    educational_facility = serializers.CharField(max_length=255, default=None)
     sphere_of_interest = serializers.ChoiceField(choices=InterestSphereEnum.choices())
     password = serializers.CharField()
     password_confirmation = serializers.CharField()

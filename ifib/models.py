@@ -47,6 +47,22 @@ class User(AbstractUser):
         super().save(*args, **kwargs)
 
 
+class Article(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название")
+    description = models.TextField(verbose_name="Описание")
+    author = models.CharField(max_length=255, verbose_name="Автор")
+    cover = models.ImageField(upload_to="article/covers/", verbose_name="Обложка")
+    document = models.FileField(
+        upload_to="article/documents/", verbose_name="Документ", help_text="Формат: PDF"
+    )
+
+    class Meta:
+        verbose_name_plural = "Научно-популярные статьи"
+
+    def __str__(self):
+        return f"{self.author} - {self.name}"
+
+
 class TeamMember(models.Model):
     name = models.CharField(max_length=255, verbose_name="Имя Фамилия")
     image = models.ImageField(upload_to="team_members/", verbose_name="Фото")
