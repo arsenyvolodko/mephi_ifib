@@ -66,6 +66,7 @@ class Article(models.Model):
 class TeamMember(models.Model):
     name = models.CharField(max_length=255, verbose_name="Имя Фамилия")
     image = models.ImageField(upload_to="team_members/", verbose_name="Фото")
+    description = models.CharField(max_length=255, verbose_name="Должность")
 
     class Meta:
         verbose_name_plural = "Члены команды"

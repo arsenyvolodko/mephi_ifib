@@ -10,6 +10,7 @@ from ifib.api.article.serializers import (
     BriefArticleSerializer,
     BriefArticleSerializerResponse, ArticleSerializer,
 )
+from ifib.api.tools import get_paginated_response
 from ifib.models import Article
 
 
@@ -21,21 +22,7 @@ def get_articles(request: Request) -> Response:
 
     data = serializer.validated_data
     articles = Article.objects.filter(name__icontains=data["search_name"])
-    paginator = Paginator(articles, data["page_size"])
-    try:
-        paginated_articles: list[Article] = list(paginator.page(data["page_number"]).object_list)
-        items = [BriefArticleSerializer(article).data for article in paginated_articles]
-    except EmptyPage:
-        items = []
-
-    response_dict = {
-        "total_items": len(articles),
-        "page_size": data["page_size"],
-        "total_pages": paginator.num_pages,
-        "page_number": data["page_number"],
-        "items": items,
-    }
-
+    response_dict = get_paginated_response(articles, BriefArticleSerializer, data)
     serialized_response = BriefArticleSerializerResponse(data=response_dict)
     return Response(serialized_response.initial_data)
 
