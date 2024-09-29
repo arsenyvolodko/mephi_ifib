@@ -81,10 +81,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VideoLink'
-  /api/v1/home/team:
+  /api/v1/home/team-members:
     get:
       tags:
         - home
+      parameters:
+        - name: pageSize
+          in: query
+          schema:
+            default: 4
+            type: integer
+        - name: pageNumber
+          in: query
+          schema:
+            default: 1
+            type: integer
       responses:
         '200':
           description: successful operation
@@ -267,9 +278,10 @@ components:
       properties:
         name:
           type: string
-        image:
+        imageUrl:
           type: string
-          format: binary
+        description:
+          type: string
 
     BriefArticle:
       type: object
@@ -282,7 +294,7 @@ components:
           type: string
         coverUrl:
           type: string
-          example: https://ifib.mephi.ru/media/article/covers/1.jpg
+          example: /media/article/covers/1.jpg
 
     Article:
       type: object
@@ -297,10 +309,10 @@ components:
           type: string
         coverUrl:
           type: string
-          example: https://ifib.mephi.ru/media/article/covers/1.jpg
+          example: /media/article/covers/1.jpg
         documentUrl:
           type: string
-          example: https://ifib.mephi.ru/media/article/documents/1.pdf
+          example: /media/article/documents/1.pdf
 
     RegisterAuthResponse:
       type: object

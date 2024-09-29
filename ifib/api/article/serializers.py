@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from ifib.api.serializers import BasePaginationSerializer
 from ifib.models import Article
 
 
@@ -34,9 +35,5 @@ class BriefArticleSerializer(serializers.ModelSerializer):
         return representation
 
 
-class BriefArticleSerializerResponse(serializers.Serializer):
-    total_items = serializers.IntegerField()
-    page_size = serializers.IntegerField()
-    total_pages = serializers.IntegerField()
-    page_number = serializers.IntegerField()
+class BriefArticleSerializerResponse(BasePaginationSerializer):
     items = BriefArticleSerializer(many=True)
