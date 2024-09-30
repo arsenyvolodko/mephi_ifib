@@ -22,5 +22,5 @@ def send_feedback_form(request: Request) -> Response:
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    serializer.save()
-    return Response()
+    obj = serializer.save()
+    return Response({"id": obj.id})
