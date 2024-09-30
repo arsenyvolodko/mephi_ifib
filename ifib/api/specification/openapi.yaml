@@ -246,15 +246,24 @@ components:
 
     FeedbackRequest:
       type: object
+      required:
+        - name
+        - phoneNumber
+        - email
+        - text
+        - allowPersonalDataProcessing
       properties:
         name:
           type: string
         phoneNumber:
           type: string
+          example: 9101459029
         email:
           type: string
         text:
           type: string
+        allowPersonalDataProcessing:
+          type: boolean
 
     VideoLink:
       type: object
