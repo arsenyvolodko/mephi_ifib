@@ -76,7 +76,18 @@ class TeamMember(models.Model):
 
 
 class FeedbackForm(models.Model):
-    name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=10)
+    name = models.CharField(max_length=255, verbose_name="Отправитель")
+    phone_number = models.CharField(max_length=10, verbose_name="Номер телефона", help_text="Указан без +7")
     email = models.EmailField()
-    text = models.TextField()
+    text = models.TextField(verbose_name="Текст обращения")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+    resolved = models.BooleanField(default=False, verbose_name="Обращение закрыто")
+
+    class Meta:
+        verbose_name_plural = "Обратная связь"
+
+    def _get_resolved_emoji(self):
+        return "✅" if self.resolved else "❌"
+
+    def __str__(self):
+        return f"{self._get_resolved_emoji()} {self.name} - {self.created.strftime('%d.%m.%Y %H:%M')}"
