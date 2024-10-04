@@ -1,5 +1,5 @@
 from .forms import CustomUserForm
-from .models import TeamMember, Article, FeedbackForm
+from .models import TeamMember, Article, FeedbackForm, Terms
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -18,4 +18,5 @@ class CustomUserAdmin(BaseUserAdmin):
 admin.site.register(TeamMember)
 admin.site.register(Article)
 admin.site.register(FeedbackForm)
+admin.site.register(Terms)
 admin.site.register(User, CustomUserAdmin)

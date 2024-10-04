@@ -167,12 +167,12 @@ paths:
           schema:
             type: string
             enum:
-              - "radionuclides_diagnosis"
-              - "radiation_therapy"
-              - "ultra_sound_diagnosis"
-              - "mri_diagnosis"
+              - "radionuclidesDiagnosis"
+              - "radiationTherapy"
+              - "ultraSoundDiagnosis"
+              - "mriDiagnosis"
               - "safety"
-              - "regulatory_documents"
+              - "regulatoryDocuments"
       tags:
         - knowledge-base
       responses:
