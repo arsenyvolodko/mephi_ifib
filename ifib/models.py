@@ -3,13 +3,13 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from ifib.enums import RoleEnum, InterestSphereEnum, EducationalStatusEnum
+from ifib.enums import RoleEnum, InterestSphereEnum, EducationalStatusEnum, KnowledgeBaseEnum
 
 
 class Role(models.Model):
     name = models.CharField(
         max_length=50,
-        choices=[(tag.value, tag.formatted_name) for tag in RoleEnum],
+        choices=RoleEnum.choices(),
         unique=True,
     )
 
@@ -36,12 +36,8 @@ class User(AbstractUser):
     class Meta:
         verbose_name_plural = "Пользователи"
 
-    @property
-    def get_role(self) -> RoleEnum | None:
-        return RoleEnum(value=self.role.id) if self.role else None
-
     def save(self, *args, **kwargs):
-        if self.get_role == RoleEnum.ADMIN:
+        if RoleEnum.from_db_obj(self.role) == RoleEnum.ADMIN:
             self.is_superuser = True
             self.is_staff = True
         super().save(*args, **kwargs)
@@ -91,3 +87,25 @@ class FeedbackForm(models.Model):
 
     def __str__(self):
         return f"{self._get_resolved_emoji()} {self.name} - {self.created.strftime('%d.%m.%Y %H:%M')}"
+
+
+class KnowledgeBase(models.Model):
+    name = models.CharField(max_length=36, choices=KnowledgeBaseEnum.choices(), unique=True, verbose_name="Название раздела")
+
+    class Meta:
+        verbose_name_plural = "База знаний"
+
+    def __str__(self):
+        return KnowledgeBaseEnum.from_db_obj(self).formatted_name
+
+
+class Terms(models.Model):
+    knowledge_base = models.ForeignKey(KnowledgeBase, on_delete=models.CASCADE, verbose_name="Раздел базы знаний")
+    name = models.CharField(max_length=255, verbose_name="Термин")
+    definition = models.TextField(verbose_name="Определение")
+
+    class Meta:
+        verbose_name_plural = "Термины"
+
+    def __str__(self):
+        return f"{self.knowledge_base} - {self.name}"

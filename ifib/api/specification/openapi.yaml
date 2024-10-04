@@ -157,6 +157,69 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Article'
+  /api/v1/knowledge-base:
+    get:
+      description: "Запрос для получения id раздела Базы знаний по названию"
+      parameters:
+        - name: name
+          in: query
+          description: Название раздела
+          schema:
+            type: string
+            enum:
+              - "radionuclidesDiagnosis"
+              - "radiationTherapy"
+              - "ultraSoundDiagnosis"
+              - "mriDiagnosis"
+              - "safety"
+              - "regulatoryDocuments"
+      tags:
+        - knowledge-base
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedObject'
+  /api/v1/knowledge-base/{knowledgeBaseId}/terms:
+    get:
+      parameters:
+        - name: knowledgeBaseId
+          in: path
+          required: true
+          description: id раздела Базы знаний
+          schema:
+            type: integer
+        - name: startsWith
+          in: query
+          description: поиск по началу термина
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: поиск по вхождению
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          schema:
+            default: 10
+            type: integer
+        - name: pageNumber
+          in: query
+          schema:
+            default: 1
+            type: integer
+      tags:
+        - knowledge-base
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTermsResponse'
 
 components:
   securitySchemes:
@@ -312,6 +375,16 @@ components:
           type: string
           example: /media/article/documents/1.pdf
 
+    Term:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        definition:
+          type: string
+
     RegisterAuthResponse:
       type: object
       properties:
@@ -333,6 +406,22 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/BriefArticle"
+
+    GetTermsResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        pageNumber:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Term"
 
     TokenResponse:
       type: object
