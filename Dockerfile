@@ -17,4 +17,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH='/app'
 
-RUN mkdir -p media/
+RUN mkdir -p media/home/team_members/
+RUN mkdir -p media/nuclear_medicine_intro/article/covers
+RUN mkdir -p media/nuclear_medicine_intro/article/documents
+RUN mkdir -p media/nuclear_medicine_intro/equipment/covers
+RUN mkdir -p media/nuclear_medicine_intro/equipment/models
