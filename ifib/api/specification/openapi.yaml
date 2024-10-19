@@ -111,7 +111,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedObject'
-  /api/v1/article:
+  /api/v1/nuclear-medicine-intro/article:
     get:
       tags:
         - article
@@ -140,7 +140,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GetArticlesResponse'
-  /api/v1/article/{articleId}:
+  /api/v1/nuclear-medicine-intro/article/{articleId}:
     get:
       parameters:
         - name: articleId
@@ -157,11 +157,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Article'
-  /api/v1/knowledge-base:
+  /api/v1/knowledge-base/:
     get:
       description: "Запрос для получения id раздела Базы знаний по названию"
       parameters:
         - name: name
+          required: true
           in: query
           description: Название раздела
           schema:
@@ -220,6 +221,87 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetTermsResponse'
+  /api/v1/nuclear-medicine-intro/equipment-group/:
+    get:
+      description: "Запрос для получения id раздела группы оборудования"
+      parameters:
+        - name: name
+          required: false
+          in: query
+          description: Название группы оборудования
+          schema:
+            type: string
+            enum:
+              - "scintigraphy"
+              - "singlePhotonEmissionTomography"
+              - "positronEmissionTomography"
+              - "computedTomography"
+              - "MRI"
+              - "radiationTherapy"
+      tags:
+        - equipment
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NamedCountedObject'
+  /api/v1/nuclear-medicine-intro/equipment-group/{EquipmentGroupId}/equipment/:
+    get:
+      parameters:
+        - name: EquipmentGroupId
+          in: path
+          required: true
+          description: id группы оборудования
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          schema:
+            default: 10
+            type: integer
+        - name: pageNumber
+          in: query
+          schema:
+            default: 1
+            type: integer
+      tags:
+        - equipment
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEquipmentListResponse'
+
+  /api/v1/nuclear-medicine-intro/equipment-group/{EquipmentGroupId}/equipment/{EquipmentId}:
+    get:
+      parameters:
+        - name: EquipmentGroupId
+          in: path
+          required: true
+          description: id группы оборудования
+          schema:
+            type: integer
+        - name: EquipmentId
+          in: path
+          required: true
+          description: id модели/оборудования
+          schema:
+            type: integer
+      tags:
+        - equipment
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailEquipment'
 
 components:
   securitySchemes:
@@ -385,6 +467,30 @@ components:
         definition:
           type: string
 
+    Equipment:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        cover:
+          type: string
+          example: media/nuclear_medicine_intro/equipment/covers/1.jpg
+
+    DetailEquipment:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        model:
+          type: string
+          format: binary
+
     RegisterAuthResponse:
       type: object
       properties:
@@ -423,11 +529,46 @@ components:
           items:
             $ref: "#/components/schemas/Term"
 
+    GetEquipmentListResponse:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+        pageSize:
+          type: integer
+        totalPages:
+          type: integer
+        pageNumber:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Equipment"
+
     TokenResponse:
       type: object
       properties:
         token:
           type: string
+
+    NamedCountedObject:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        count:
+          type: integer
+
+    NamedObject:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
 
     CreatedObject:
       properties:

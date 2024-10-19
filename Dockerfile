@@ -17,6 +17,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH='/app'
 
+RUN python manage.py migrate
+
 RUN mkdir -p media/home/team_members/
 RUN mkdir -p media/nuclear_medicine_intro/article/covers
 RUN mkdir -p media/nuclear_medicine_intro/article/documents

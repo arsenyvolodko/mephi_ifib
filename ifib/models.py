@@ -47,9 +47,9 @@ class Article(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     author = models.CharField(max_length=255, verbose_name="Автор")
-    cover = models.ImageField(upload_to="article/covers/", verbose_name="Обложка")
+    cover = models.ImageField(upload_to="nuclear_medicine_intro/article/covers/", verbose_name="Обложка")
     document = models.FileField(
-        upload_to="article/documents/", verbose_name="Документ", help_text="Формат: PDF"
+        upload_to="nuclear_medicine_intro/article/documents/", verbose_name="Документ", help_text="Формат: PDF"
     )
 
     class Meta:
@@ -61,7 +61,7 @@ class Article(models.Model):
 
 class TeamMember(models.Model):
     name = models.CharField(max_length=255, verbose_name="Имя Фамилия")
-    image = models.ImageField(upload_to="team_members/", verbose_name="Фото")
+    image = models.ImageField(upload_to="home/team_members/", verbose_name="Фото")
     description = models.CharField(max_length=255, verbose_name="Должность")
 
     class Meta:
@@ -109,3 +109,27 @@ class Terms(models.Model):
 
     def __str__(self):
         return f"{self.knowledge_base} - {self.name}"
+
+
+class EquipmentGroup(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название")
+
+    class Meta:
+        verbose_name_plural = "Группа оборудования"
+
+    def __str__(self):
+        return KnowledgeBaseEnum.from_db_obj(self).formatted_name
+
+
+class Equipment(models.Model):
+    equipment_group = models.ForeignKey(EquipmentGroup, on_delete=models.CASCADE, verbose_name="Группа оборудования")
+    name = models.CharField(max_length=255, verbose_name="Название")
+    description = models.TextField(verbose_name="Описание")
+    cover = models.ImageField(upload_to="nuclear_medicine_intro/equipment/covers", verbose_name="Обложка/изображение модели")
+    model = models.FileField(upload_to="nuclear_medicine_intro/equipment/models", verbose_name="Файл с 3D-моделью")
+
+    class Meta:
+        verbose_name_plural = "Оборудование (3D-модели)"
+
+    def __str__(self):
+        return self.name
