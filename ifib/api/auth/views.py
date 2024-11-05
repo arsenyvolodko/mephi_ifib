@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from ifib.models import User
+from ifib.tasks import send_verification_email
 from .serializers import (
     UserRegisterSerializer,
     ConfirmRegisterSerializer,
@@ -27,24 +28,27 @@ def register(request):
             },
             status=status.HTTP_400_BAD_REQUEST,
         )
+    email = data["email"]
+    confirmation_code = generate_confirmation_code()
     user = User(
         last_name=data["last_name"],
         first_name=data["first_name"],
         middle_name=data["middle_name"],
         birth_date=data["birth_date"],
-        email=data["email"],
-        username=data["email"],
+        email=email,
+        username=email,
         social_network=data["social_network"],
         educational_status=data["educational_status"],
         educational_facility=data["educational_facility"],
         sphere_of_interest=data["sphere_of_interest"],
         is_active=False,
-        confirmation_code=generate_confirmation_code(),
+        confirmation_code=confirmation_code,
     )
     user.set_password(data["password"])
     user.save()
+    send_verification_email.delay(email, confirmation_code)
     return Response(
-        {"token": user.registration_token, "confirmation_code": user.confirmation_code}
+        {"token": user.registration_token, "confirmation_code": confirmation_code}
     )
 
 
@@ -120,9 +124,10 @@ def update_confirmation_code(request):
             },
             status=status.HTTP_400_BAD_REQUEST,
         )
-    user.confirmation_code = generate_confirmation_code()
+    confirmation_code = generate_confirmation_code()
+    user.confirmation_code = confirmation_code
     user.confirmation_code_attempts_num = 0
     user.confirmation_code_last_update = timezone.now()
     user.save()
-    # todo send code
+    send_verification_email.delay(user.email, confirmation_code)
     return Response({"confirmation_code": user.confirmation_code})
