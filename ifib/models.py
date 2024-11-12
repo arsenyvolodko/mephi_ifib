@@ -47,7 +47,7 @@ class Article(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     author = models.CharField(max_length=255, verbose_name="Автор")
-    cover = models.ImageField(upload_to="article/covers/", verbose_name="Обложка")
+    cover = models.ImageField(upload_to="nuclear_medicine_intro/article/covers/", verbose_name="Обложка")
     document = models.FileField(
         upload_to="article/documents/", verbose_name="Документ", help_text="Формат: PDF"
     )
@@ -61,7 +61,7 @@ class Article(models.Model):
 
 class TeamMember(models.Model):
     name = models.CharField(max_length=255, verbose_name="Имя Фамилия")
-    image = models.ImageField(upload_to="team_members/", verbose_name="Фото")
+    image = models.ImageField(upload_to="home/team_members/", verbose_name="Фото")
     description = models.CharField(max_length=255, verbose_name="Должность")
 
     class Meta:
@@ -109,3 +109,17 @@ class Terms(models.Model):
 
     def __str__(self):
         return f"{self.knowledge_base} - {self.name}"
+
+
+class Films(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название")
+    theme = models.CharField(max_length=255, verbose_name="Тематика/участники")
+    description = models.TextField(verbose_name="Описание")
+    cover = models.ImageField(upload_to="nuclear_medicine_intro/films/", verbose_name="Обложка")
+    link = models.URLField(verbose_name="Ссылка на видео")
+
+    class Meta:
+        verbose_name_plural = "Видео"
+
+    def __str__(self):
+        return f"{self.name}"

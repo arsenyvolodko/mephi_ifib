@@ -111,10 +111,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreatedObject'
-  /api/v1/article:
+  /api/v1/nuclear-medicine-intro/article:
     get:
       tags:
-        - article
+        - nuclear-medicine-intro
       parameters:
         - name: searchName
           in: query
@@ -140,7 +140,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GetArticlesResponse'
-  /api/v1/article/{articleId}:
+  /api/v1/nuclear-medicine-intro/article/{articleId}:
     get:
       parameters:
         - name: articleId
@@ -149,7 +149,7 @@ paths:
           schema:
             type: integer
       tags:
-        - article
+        - nuclear-medicine-intro
       responses:
         '200':
           description: successful operation
@@ -157,6 +157,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Article'
+  /api/v1/nuclear-medicine-intro/films/:
+    get:
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+      tags:
+        - nuclear-medicine-intro
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
   /api/v1/knowledge-base:
     get:
       description: "Запрос для получения id раздела Базы знаний по названию"
@@ -384,6 +406,31 @@ components:
           type: string
         definition:
           type: string
+
+    Film:
+      type: object
+      required:
+       - id
+       - name
+       - theme
+       - description
+       - cover
+       - link
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        theme:
+          type: string
+        description:
+          type: string
+        cover:
+          type: string
+          example: "https://link"
+        link:
+          type: string
+          example: "https://link"
 
     RegisterAuthResponse:
       type: object
