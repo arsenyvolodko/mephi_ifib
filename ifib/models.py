@@ -3,7 +3,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from ifib.enums import RoleEnum, InterestSphereEnum, EducationalStatusEnum, KnowledgeBaseEnum
+from ifib.enums import RoleEnum, InterestSphereEnum, EducationalStatusEnum, KnowledgeBaseEnum, EquipmentGroupEnum
 
 
 class Role(models.Model):
@@ -123,3 +123,17 @@ class Films(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class Equipment(models.Model):
+    equipment_group = models.CharField(max_length=255, verbose_name="Группа оборудования", choices=EquipmentGroupEnum.choices)
+    name = models.CharField(max_length=255, verbose_name="Название")
+    description = models.TextField(verbose_name="Описание")
+    cover = models.ImageField(upload_to="nuclear_medicine_intro/equipment/", verbose_name="Обложка/изображение модели")
+    model = models.URLField(verbose_name="Ссылка на 3D-модель")
+
+    class Meta:
+        verbose_name_plural = "Оборудование"
+
+    def __str__(self):
+        return self.name

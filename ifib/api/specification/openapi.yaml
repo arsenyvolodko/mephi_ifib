@@ -179,6 +179,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Film'
+  /api/v1/nuclear-medicine-intro/equipment/:
+    get:
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: equipment_group
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - scintigraphy
+              - single_photon_emission_tomography
+              - positron_emission_tomography
+              - computed_tomography
+              - mri
+              - radiation_therapy
+      tags:
+        - nuclear-medicine-intro
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipment'
   /api/v1/knowledge-base:
     get:
       description: "Запрос для получения id раздела Базы знаний по названию"
@@ -431,6 +465,32 @@ components:
         link:
           type: string
           example: "https://link"
+
+    Equipment:
+      type: object
+      required:
+        - id
+        - name
+        - equipment_group
+        - description
+        - cover
+        - model
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        equipment_group:
+          type: string
+        description:
+          type: string
+        cover:
+          type: string
+          example: "https://link"
+        model:
+          type: string
+          example: "https://link"
+
 
     RegisterAuthResponse:
       type: object
