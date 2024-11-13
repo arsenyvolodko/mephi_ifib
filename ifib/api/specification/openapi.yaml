@@ -3,7 +3,7 @@ info:
   title: Mephi-IFIB API
   version: '1.0'
 servers:
-  - url: http://localhost:8000
+  - url: http://localhost:8000/
     description: Local server
 paths:
   /api/v1/auth/register:
@@ -178,7 +178,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Film'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
   /api/v1/nuclear-medicine-intro/equipment/:
     get:
       parameters:
@@ -212,7 +214,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Equipment'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Equipment'
+  /api/v1/nuclear-medicine-intro/podcasts/:
+    get:
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+      tags:
+        - nuclear-medicine-intro
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Podcast'
   /api/v1/knowledge-base:
     get:
       description: "Запрос для получения id раздела Базы знаний по названию"
@@ -491,6 +519,27 @@ components:
           type: string
           example: "https://link"
 
+    Podcast:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - cover
+        - link
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        cover:
+          type: string
+          example: "https://link"
+        link:
+          type: string
+          example: "https://link"
 
     RegisterAuthResponse:
       type: object

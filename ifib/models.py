@@ -149,3 +149,16 @@ class Practice(models.Model):
 
     def __str__(self):
         return self.practice_group
+
+
+class Podcasts(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Название")
+    description = models.TextField(verbose_name="Описание (автор, тематика)")
+    cover = models.ImageField(upload_to="nuclear_medicine_intro/podcasts/", verbose_name="Обложка")
+    link = models.URLField(verbose_name="Ссылка на подкаст")
+
+    class Meta:
+        verbose_name_plural = "Подкасты"
+
+    def __str__(self):
+        return self.name
