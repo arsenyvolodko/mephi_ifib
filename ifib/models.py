@@ -3,7 +3,8 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from ifib.enums import RoleEnum, InterestSphereEnum, EducationalStatusEnum, KnowledgeBaseEnum, EquipmentGroupEnum
+from ifib.enums import RoleEnum, InterestSphereEnum, EducationalStatusEnum, KnowledgeBaseEnum, EquipmentGroupEnum, \
+    PracticeGroupEnum
 
 
 class Role(models.Model):
@@ -137,3 +138,14 @@ class Equipment(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Practice(models.Model):
+    practice_group = models.CharField(max_length=255, verbose_name="Практикум", choices=PracticeGroupEnum.choices, unique=True)
+    link = models.URLField(verbose_name="Ссылка на stepik")
+
+    class Meta:
+        verbose_name_plural = "Практикум"
+
+    def __str__(self):
+        return self.practice_group

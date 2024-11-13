@@ -16,7 +16,7 @@ class ListEquipmentView(GenericAPIView, ListModelMixin):
     filter_backends = [DjangoFilterBackend]
 
     def filter_queryset(self, queryset):
-        return super().filter_queryset(queryset)
+        return super().filter_queryset(queryset).order_by("id")
 
     def get(self, request: Request) -> Response:
         return self.list(request)

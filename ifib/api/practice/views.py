@@ -4,15 +4,15 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from ifib.api.nuclear_medicine_intro.films.filters import FilmsFilterSet
-from ifib.api.nuclear_medicine_intro.films.serializers import FilmSerializer
-from ifib.models import Films
+from ifib.api.practice.filters import PracticeFilterSet
+from ifib.api.practice.serializers import PracticeSerializer
+from ifib.models import Practice
 
 
-class ListFilmView(GenericAPIView, ListModelMixin):
-    queryset = Films.objects.all()
-    serializer_class = FilmSerializer
-    filterset_class = FilmsFilterSet
+class ListPracticeView(GenericAPIView, ListModelMixin):
+    queryset = Practice.objects.all()
+    serializer_class = PracticeSerializer
+    filterset_class = PracticeFilterSet
     filter_backends = [DjangoFilterBackend]
 
     def filter_queryset(self, queryset):
